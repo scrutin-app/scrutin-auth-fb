@@ -39,6 +39,13 @@
             }, {scope: 'user_link,user_friends'});
         }
 
+        function logout() {
+            FB.logout(function(response) {
+                // Person is now logged out
+                console.log('User is now logged out');
+            });
+        }
+
         function fetchFriends() {
             FB.api('/me', function(response) {
                 console.log('Me:', response);
@@ -58,6 +65,7 @@
 <body>
     <h1>Facebook Friends</h1>
     <button id="loginBtn" onclick="login()">Login with Facebook</button>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
     <ul id="friendsList"></ul>
 </body>
 </html>
