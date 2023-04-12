@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Facebook Friends</title>
+    <script src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '937069177330347',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v12.0'
+            });
+                
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    // User is already logged in and authorized
+                    console.log('Logged in and authorized');
+                    fetchFriends();
+                } else {
+                    // User is not logged in, show login button
+                    console.log('Not logged in');
+                    document.getElementById('loginBtn').style.display = 'block';
+                }
+            });
+        };
+
+        function login() {
+            FB.login(function(response) {
+                if (response.status === 'connected') {
+                    // User has authorized your app
+                    console.log('Logged in and authorized');
+                    fetchFriends();
+                } else {
+                    // User canceled login or did not fully authorize the app
+                    console.log('Not logged in');
+                }
+            }, {scope: 'user_friends'});
+        }
+
+        function fetchFriends() {
+            FB.api('/me/friends', function(response) {
+                console.log('Friends:', response);
+                var friendsList = document.getElementById('friendsList');
+                friendsList.innerHTML = '';
+                for (var i = 0; i < response.data.length; i++) {
+                    var friend = response.data[i];
+                    friendsList.innerHTML += '<li>' + friend.name + '</li>';
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Facebook Friends</h1>
+    <button id="loginBtn" onclick="login()">Login with Facebook</button>
+    <ul id="friendsList"></ul>
+</body>
+</html>
