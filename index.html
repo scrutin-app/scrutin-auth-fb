@@ -40,6 +40,9 @@
         }
 
         function fetchFriends() {
+            FB.api('/me', function(response) {
+                console.log('Me:', response);
+            })
             FB.api('/me/friends', function(response) {
                 console.log('Friends:', response);
                 var friendsList = document.getElementById('friendsList');
